@@ -8,7 +8,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "rtbyalsejvgrenhsymvr.supabase.co",
+        hostname: "*.public.blob.vercel-storage.com",
       },
       {
         protocol: "https",

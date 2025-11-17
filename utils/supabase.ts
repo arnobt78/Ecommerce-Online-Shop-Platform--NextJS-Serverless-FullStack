@@ -1,24 +1,33 @@
-import { createClient } from '@supabase/supabase-js';
-
-const bucket = 'main-bucket';
-
-export const supabase = createClient(
-  process.env.SUPABASE_URL as string,
-  process.env.SUPABASE_KEY as string
-);
+import { put, del } from '@vercel/blob';
 
 export const uploadImage = async (image: File) => {
   const timestamp = Date.now();
   const newName = `${timestamp}-${image.name}`;
-  const { data } = await supabase.storage
-    .from(bucket)
-    .upload(newName, image, { cacheControl: '3600' });
-  if (!data) throw new Error('Image upload failed');
-  return supabase.storage.from(bucket).getPublicUrl(newName).data.publicUrl;
+  
+  const blob = await put(newName, image, {
+    access: 'public',
+    token: process.env.BLOB_READ_WRITE_TOKEN,
+  });
+  
+  if (!blob.url) throw new Error('Image upload failed');
+  return blob.url;
 };
 
-export const deleteImage = (url: string) => {
-  const imageName = url.split('/').pop();
-  if (!imageName) throw new Error('Invalid URL');
-  return supabase.storage.from(bucket).remove([imageName]);
+export const deleteImage = async (url: string) => {
+  try {
+    // Extract the blob path from the URL
+    // Vercel Blob URLs format: https://[hash].public.blob.vercel-storage.com/[filename]
+    const urlObj = new URL(url);
+    const pathname = urlObj.pathname;
+    
+    // Remove leading slash to get the blob path
+    const blobPath = pathname.startsWith('/') ? pathname.slice(1) : pathname;
+    
+    await del(blobPath, {
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    });
+  } catch (error) {
+    console.error('Error deleting image:', error);
+    // Don't throw error to prevent breaking the flow if image deletion fails
+  }
 };
