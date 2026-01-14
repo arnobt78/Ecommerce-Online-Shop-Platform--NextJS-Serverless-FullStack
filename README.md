@@ -1,6 +1,6 @@
-# Next Store | E-Commerce Platform - Next.js, TypeScript, Prisma, NeonDB, Vercel Blob, Clerk, Stripe Fullstack Project
+# Next Store | E-Commerce Platform - Next.js, TypeScript, Prisma, PostgreSQL, Vercel Blob, Clerk, Stripe Fullstack Project
 
-A beautifully designed, high-performance e-commerce platform built with Next.js 14, TypeScript, Prisma, NeonDB, Vercel Blob Storage, Clerk authentication, Stripe payments, and shadcn/ui. Next Store offers a seamless online shopping experience with fast checkout, secure payments, and a curated selection of products.
+A beautifully designed, high-performance e-commerce platform built with Next.js 14, TypeScript, Prisma, PostgreSQL, Vercel Blob Storage, Clerk authentication, Stripe payments, and shadcn/ui. Next Store offers a seamless online shopping experience with fast checkout, secure payments, and a curated selection of products.
 
 - **Live-Demo:** [https://store-next-beta.vercel.app/](https://store-next-beta.vercel.app/)
 
