@@ -1,6 +1,7 @@
 'use client';
 
 import { useUser, useClerk, useAuth } from '@clerk/nextjs';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import {
@@ -60,14 +61,16 @@ export default function UserProfileDropdown() {
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-9 w-9 rounded-full p-0">
-          <div className="h-9 w-9 rounded-full border-2 overflow-hidden">
+          <div className="relative h-9 w-9 rounded-full border-2 overflow-hidden">
             {avatarUrl ? (
-              <img
+              <Image
                 src={avatarUrl}
                 alt={name}
-                className="h-full w-full object-cover"
+                fill
+                className="object-cover"
                 onError={() => setAvatarError(true)}
                 referrerPolicy="no-referrer"
+                sizes="36px"
               />
             ) : (
               <Skeleton className="h-full w-full rounded-none" />
