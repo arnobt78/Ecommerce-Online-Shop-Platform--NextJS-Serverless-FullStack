@@ -2,6 +2,7 @@
 
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useFormStatus } from "react-dom";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { SignInButton } from "@clerk/nextjs";
@@ -70,8 +71,9 @@ export const IconButton = ({ actionType }: { actionType: actionType }) => {
 };
 
 export const CardSignInButton = () => {
+  const pathname = usePathname();
   return (
-    <SignInButton mode="modal">
+    <SignInButton mode="redirect" forceRedirectUrl={pathname || "/products"}>
       <Button
         type="button"
         size="icon"
@@ -106,8 +108,9 @@ export const CardSubmitButton = ({ isFavorite }: { isFavorite: boolean }) => {
 };
 
 export const ProductSignInButton = () => {
+  const pathname = usePathname();
   return (
-    <SignInButton mode="modal">
+    <SignInButton mode="redirect" forceRedirectUrl={pathname || "/products"}>
       <Button type="button" className="mt-8 capitalize">
         sign in
       </Button>

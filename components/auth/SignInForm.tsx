@@ -32,9 +32,13 @@ const testAccounts = {
 
 interface SignInFormProps {
   isGuest?: boolean | "admin";
+  redirectUrl?: string;
 }
 
-export default function SignInForm({ isGuest = false }: SignInFormProps) {
+export default function SignInForm({
+  isGuest = false,
+  redirectUrl = "/products",
+}: SignInFormProps) {
   const { isLoaded, signIn, setActive } = useSignIn();
   const { toast } = useToast();
   const [selectedRole, setSelectedRole] = useState<string>("");
@@ -72,7 +76,7 @@ export default function SignInForm({ isGuest = false }: SignInFormProps) {
     signIn.authenticateWithRedirect({
       strategy,
       redirectUrl: "/sign-in/sso-callback",
-      redirectUrlComplete: "/products",
+      redirectUrlComplete: redirectUrl,
     });
   };
 
@@ -89,7 +93,7 @@ export default function SignInForm({ isGuest = false }: SignInFormProps) {
 
       if (result.status === "complete") {
         await setActive!({ session: result.createdSessionId });
-        window.location.href = "/products";
+        window.location.href = redirectUrl;
         return;
       }
     } catch (err) {
