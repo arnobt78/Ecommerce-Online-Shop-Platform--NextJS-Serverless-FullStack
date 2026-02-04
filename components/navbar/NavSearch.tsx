@@ -3,6 +3,7 @@ import { Input } from '../ui/input';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import { useState, useEffect } from 'react';
+import { LuSearch } from 'react-icons/lu';
 
 function NavSearch() {
   const searchParams = useSearchParams();
@@ -28,16 +29,19 @@ function NavSearch() {
   }, [searchParams, searchValue]);
 
   return (
-    <Input
-      type='search'
-      placeholder='search product...'
-      className='max-w-xs dark:bg-muted'
-      onChange={(e) => {
-        setSearch(e.target.value);
-        handleSearch(e.target.value);
-      }}
-      value={search}
-    />
+    <div className='relative max-w-xs'>
+      <LuSearch className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none' />
+      <Input
+        type='search'
+        placeholder='Search Product...'
+        className='pl-9 dark:bg-muted'
+        onChange={(e) => {
+          setSearch(e.target.value);
+          handleSearch(e.target.value);
+        }}
+        value={search}
+      />
+    </div>
   );
 }
 export default NavSearch;
