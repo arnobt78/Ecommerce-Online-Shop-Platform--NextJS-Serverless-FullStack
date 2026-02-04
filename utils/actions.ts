@@ -18,9 +18,18 @@ const getAuthUser = async () => {
   return user;
 };
 
+const getAdminIds = (): string[] => {
+  const ids = [
+    process.env.ADMIN_USER_ID,
+    process.env.ADMIN_TEST_USER_ID,
+  ].filter(Boolean) as string[];
+  return ids;
+};
+
 const getAdminUser = async () => {
   const user = await getAuthUser();
-  if (user.id !== process.env.ADMIN_USER_ID) redirect('/');
+  const adminIds = getAdminIds();
+  if (!adminIds.length || !adminIds.includes(user.id)) redirect('/');
   return user;
 };
 
@@ -333,16 +342,21 @@ export const findExistingReview = async (userId: string, productId: string) => {
 };
 
 export const fetchCartItems = async () => {
-  const { userId } = auth();
-  const cart = await db.cart.findFirst({
-    where: {
-      clerkId: userId ?? '',
-    },
-    select: {
-      numItemsInCart: true,
-    },
-  });
-  return cart?.numItemsInCart || 0;
+  try {
+    const { userId } = auth();
+    const cart = await db.cart.findFirst({
+      where: {
+        clerkId: userId ?? '',
+      },
+      select: {
+        numItemsInCart: true,
+      },
+    });
+    return cart?.numItemsInCart || 0;
+  } catch {
+    // auth() throws when clerkMiddleware didn't run (e.g. 404 static asset requests)
+    return 0;
+  }
 };
 
 const fetchProduct = async (productId: string) => {
